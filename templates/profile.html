@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class ="container student-profile">
+        <div class="row">
+            <div class="col-md-3">
+                {% load static %}
+                <img src="{% static 'img/profile.png' %}" alt="" width="50%">
+                <h3 class="text-muted p-1"><b> Student List</B></h3>
+            </div>
+            <div class="col-md-6">
+                <div class="profile-head">
+                </div>
+        </div>
+        <div class="col-md-3">
+            <a href="/student"><input type="submit" class="profile-edit-btn m-2 " name="btnAddMore"
+                    value="Add Profile" /></a>
+                    <a   href="/"><input type="submit" class="profile-edit-btn m-2 "
+                        name="btnAddMore" value="Return" /></a>
+                        {% comment %} <a   href="{% url 'reset'  %}"><input type="submit" class="profile-reset-btn m-2 "
+                            name="btnAddMore" value="reset" /></a> {% endcomment %}
+        </div>
+    </div>
+    <hr>
+
+    <div class="tab-content" id="myTabContent">
+        <br>
+        <table class="table table-striped ">
+            <thead>
+                <tr>
+                    <th scope="col">sr. No.</th>
+                    <th scope="col">Id </th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Roll_number</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Branch</th>
+                    <th scope="col">Sem</th>
+                    <th scope="col">subject</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
+                </tr>
+
+            </thead>
+             <tbody>
+                {% for profile in profile %}
+                <tr>
+                    <th scope="row">{{forloop.counter}}</th>
+                    <td>{{profile.id}}</td>
+                    <td>{{profile.name}}</td>
+                    <td>{{profile.roll_number}}</td>
+                    <td>{{profile.gender}}</td>
+                    <td>{{profile.email}}</td>
+                    <td>{{profile.phone}}</td>
+                    <td>{{profile.branch}}</td>
+                    <td>{{profile.sem}}</td>
+                    <td>{{profile.subject}}</td>
+                    <td><img src="{{profile.image.url}}" width="10%"></td>
+                    <td><a type="button"  href="{% url 'edit_profile' profile.id %}" class="btn btn-info">Edit</a></td>
+                    <td><a type="button"  href="{% url 'delete_profile' profile.id %}" class="btn btn-danger">Delete</a></td>
+                   
+                </tr>
+                {% endfor %} 
+             </tbody>

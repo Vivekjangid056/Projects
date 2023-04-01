@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</head>
+{% comment %} container student-profile {% endcomment %}
+<body>   
+    <div class ="container student-profile" style="background-color:skyblue" >
+     
+        <div class = "col-md-3">
+            {% load static %}
+            <img src="{% static 'img/profile.png' %}" alt="" width="50%">
+            <h6 class="text-muted p-1"> student attendance system</h6>
+        </div>
+        <div class="col-md-6">
+            <div class="profile-head">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <a target="" class="scan" href="{% url 'scan' %}"><input type="submit" class="profile-edit-btn m-2"
+                    name="btnAddMore" value="Run Scanner" /></a>
+            <a   href="{% url 'profile' %}"><input type="submit" class="profile-edit-btn m-2 "
+                        name="btnAddMore" value="Profiles" /></a>
+        </div>
+     
+    </div>
+
+    <hr>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="present-tab" data-toggle="tab" href="#present" role="tab"
+                aria-controls="home" aria-selected="true">Present</a>
+        </li>
+
+         <li class="nav-item " role="presentation">
+            <a class="nav-link " id="absent-tab" data-toggle="tab" href="#absent" role="tab" aria-controls="profile"
+                    aria-selected="true">absent</a>
+        </li>
+
+        <li class="nav-item" role="presentation">
+            <a class="nav-link " id="history-tab" data-toggle="tab" href="#history" role="tab" aria-controls="contact"
+                aria-selected="false">Attendance</a>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="myTabContent">
+        <br>
+        <div class="tab-pane fade show active" id="present" role="tabpanel" aria-labelledby="home-tab">
+            <table class="table table-striped ">
+                <thead>
+                    <tr>
+                        <th scope="col"> </th>
+                        <th scope="col">Name</th>
+                        <th scope="col">roll_number</th>
+                        <th scope="col">Entry Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for profile in present %}
+                    <tr>
+                        <th scope="row">-</th>
+                        <td>{{profile.name}} </td>
+                        <td>{{profile.roll_number}}</td>
+                        <td>{{profile.updated |date:"h:iA"}}</td>
+                    </tr>
+                    {% endfor%}
+                </tbody>
+            </table>
+            <a href="{% url 'reset' %}"><button type="button" class="btn btn-outline-secondary">Reset</button></a>
+            <a href="{% url 'home_page' %}"><button type="button" class="btn btn-outline-primary">Refresh</button></a>
+
+        </div>
+
+        <div class="tab-pane fade" id="absent" role="tabpanel" aria-labelledby="profile-tab">
+            <table class="table table-striped ">
+                <thead>
+                    <tr>
+                        <th scope="col"> </th>
+                        <th scope="col">Name</th>
+                        <th scope="col">roll_number</th>
+                        <th scope="col">Shift Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for profile in absent %}
+                    <tr>
+                        <th scope="row">-</th>
+                        <td>{{profile.first_name}}</td>
+                        <td>{{profile.roll_number}}</td>
+                        <td>{{profile.shift}}</td>
+                    </tr>
+                    {% endfor%}
+                </tbody>
+            </table>
+
+        </div>
+        <div class="tab-pane fade " id="history" role="tabpanel" aria-labelledby="contact-tab">
+            <table class="table table-striped ">
+                <thead>
+                    <tr>
+                        <th scope="col"> </th>
+                        <th scope="col">Profile ID</th>
+                        <th scope="col">Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for face in scanned %}
+                    <tr>
+                        <th scope="row">-</th>
+                        <td>{{face.last_face}}</td>
+                        <td>{{face.date}}</td>
+                        
+                    </tr>
+                    {% endfor%}
+                </tbody>
+            </table>
+            <a href="{% url 'clear_history' %}"><button type="button" class="btn btn-outline-secondary">Clear History</button></a>
+        </div>
+    </div>
+
+</div>
+<script>
+    $(".scan").click(function () {
+        var postData = { csrfmiddlewaretoken: '{{ csrf_token }}' }
+        $.ajax({
+            url: "{% url 'scan' %}",
+            data: {
+
+            },
+        });
+    });
+</script>
